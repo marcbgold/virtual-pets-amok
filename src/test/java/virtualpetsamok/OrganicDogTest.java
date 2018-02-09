@@ -6,7 +6,7 @@ import static org.junit.Assert.assertThat;
 import org.junit.Before;
 import org.junit.Test;
 
-public class VirtualPetTest {
+public class OrganicDogTest {
 
 	private static final String NAME = "Test";
 	private static final String DESCRIPTION = "Description";
@@ -15,23 +15,21 @@ public class VirtualPetTest {
 	private static final int HAPPINESS = 60;
 	private static final int TIREDNESS = 60;
 	private static final int WASTE = 60;
-	private static final int DISLIKED_FOOD_TYPE = 0;
-	private static final int HATED_FOOD_TYPE = 0;
-	private VirtualPet underTest;
+	private OrganicDog underTest;
 
 	@Before
 	public void setup() {
-		underTest = new VirtualPet(NAME, DESCRIPTION, HUNGER, THIRST, HAPPINESS, TIREDNESS, WASTE, DISLIKED_FOOD_TYPE, HATED_FOOD_TYPE);
+		underTest = new OrganicDog(NAME, DESCRIPTION, HUNGER, THIRST, HAPPINESS, TIREDNESS, WASTE);
 	}
 
 	@Test
 	public void checkForValuesOver100ShouldKeepValuesFromGoingOver100() {
-		underTest = new VirtualPet(NAME, DESCRIPTION, 110, 110, 110, 110, 110, DISLIKED_FOOD_TYPE, HATED_FOOD_TYPE);
+		underTest = new OrganicDog(NAME, DESCRIPTION, 110, 110, 110, 110, 110);
 		underTest.checkForValuesOver100();
 
 		assertThat(underTest.getHungerLevel(), is(100));
 		assertThat(underTest.getThirstLevel(), is(100));
-		assertThat(underTest.getBoredomLevel(), is(100));
+		assertThat(underTest.getHappinessLevel(), is(100));
 		assertThat(underTest.getTirednessLevel(), is(100));
 		assertThat(underTest.getWasteLevel(), is(100));
 	}
@@ -40,7 +38,7 @@ public class VirtualPetTest {
 	public void eatShouldRaiseOrLowerLevels() {
 		underTest.eat();
 
-		assertThat(underTest.getHungerLevel(), is(20));
+		assertThat(underTest.getHungerLevel(), is(10));
 		assertThat(underTest.getThirstLevel(), is(70));
 		assertThat(underTest.getTirednessLevel(), is(70));
 		assertThat(underTest.getWasteLevel(), is(80));
@@ -50,7 +48,7 @@ public class VirtualPetTest {
 	public void drinkShouldRaiseOrLowerLevels() {
 		underTest.drink();
 
-		assertThat(underTest.getThirstLevel(), is(20));
+		assertThat(underTest.getThirstLevel(), is(10));
 		assertThat(underTest.getWasteLevel(), is(80));
 	}
 
@@ -60,7 +58,7 @@ public class VirtualPetTest {
 
 		assertThat(underTest.getHungerLevel(), is(70));
 		assertThat(underTest.getThirstLevel(), is(70));
-		assertThat(underTest.getBoredomLevel(), is(20));
+		assertThat(underTest.getHappinessLevel(), is(100));
 		assertThat(underTest.getTirednessLevel(), is(90));
 	}
 
@@ -70,6 +68,7 @@ public class VirtualPetTest {
 
 		assertThat(underTest.getHungerLevel(), is(80));
 		assertThat(underTest.getThirstLevel(), is(80));
+		assertThat(underTest.getHappinessLevel(), is(40));
 		assertThat(underTest.getTirednessLevel(), is(0));
 	}
 
@@ -81,14 +80,23 @@ public class VirtualPetTest {
 	}
 
 	@Test
-	public void tickShouldRaiseValuesBy10() {
+	public void tickShouldRaiseOrLowerValuesBy10() {
 		underTest.tick();
 
 		assertThat(underTest.getHungerLevel(), is(70));
 		assertThat(underTest.getThirstLevel(), is(70));
-		assertThat(underTest.getHappinessLevel(), is(70));
+		assertThat(underTest.getHappinessLevel(), is(50));
 		assertThat(underTest.getTirednessLevel(), is(70));
 		assertThat(underTest.getWasteLevel(), is(70));
+	}
+
+	@Test
+	public void goForWalkShouldRaiseOrLowerValues() {
+		underTest.goForWalk();
+
+		assertThat(underTest.getHappinessLevel(), is(90));
+		assertThat(underTest.getTirednessLevel(), is(90));
+		assertThat(underTest.getWasteLevel(), is(0));
 	}
 
 }

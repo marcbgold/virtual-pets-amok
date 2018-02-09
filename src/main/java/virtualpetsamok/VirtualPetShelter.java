@@ -7,6 +7,12 @@ import java.util.Map.Entry;
 
 public class VirtualPetShelter {
 
+	// TODO add organic/robot classes
+	// TODO add walkable interfact
+	// TODO add shitbox class
+	// TODO add 1-to-1 dog/cage relationship
+	// TODO remove multiple litterboxes and raise max litterbox level
+
 	private Map<String, VirtualPet> roster = new HashMap<>();
 	private final String DEFAULT_NAME = "Mario";
 	private final String DEFAULT_DESCRIPTION = "Short, fat, male tabby with bushy, kinda reddish fur.  Seems to like mushrooms and flowers for some odd reason.";
