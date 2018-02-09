@@ -1,4 +1,4 @@
-package virtualpetshelter;
+package virtualpetsamok;
 
 import java.util.Random;
 

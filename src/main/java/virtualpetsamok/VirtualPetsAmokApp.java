@@ -1,11 +1,11 @@
-package virtualpetshelter;
+package virtualpetsamok;
 
 import java.util.Collection;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Scanner;
 
-public class VirtualPetShelterApp {
+public class VirtualPetsAmokApp {
 
 	public static void main(String[] args) {
 

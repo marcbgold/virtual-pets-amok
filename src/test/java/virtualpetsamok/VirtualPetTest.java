@@ -1,10 +1,12 @@
-package virtualpetshelter;
+package virtualpetsamok;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
 import org.junit.Before;
 import org.junit.Test;
+
+import virtualpetsamok.VirtualPet;
 
 public class VirtualPetTest {
 
