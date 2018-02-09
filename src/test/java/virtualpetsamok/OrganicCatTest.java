@@ -6,8 +6,7 @@ import static org.junit.Assert.assertThat;
 import org.junit.Before;
 import org.junit.Test;
 
-public class OrganicDogTest {
-
+public class OrganicCatTest {
 	private static final String NAME = "Test";
 	private static final String DESCRIPTION = "Description";
 	private static final int HUNGER = 60;
@@ -16,17 +15,17 @@ public class OrganicDogTest {
 	private static final int TIREDNESS = 60;
 	private static final int WASTE = 60;
 	private static final int HEALTH = 60;
-	private OrganicDog underTest;
+	private OrganicCat underTest;
 
 	@Before
 	public void setup() {
-		underTest = new OrganicDog(NAME, DESCRIPTION, HUNGER, THIRST, HAPPINESS, TIREDNESS, WASTE, HEALTH);
+		underTest = new OrganicCat(NAME, DESCRIPTION, HUNGER, THIRST, HAPPINESS, TIREDNESS, WASTE, HEALTH);
 	}
 
 	@Test
 	public void shouldKeepValuesInBounds() {
-		underTest = new OrganicDog(NAME, DESCRIPTION, 110, 110, 110, 110, 110, 110);
-		OrganicDog alsoUnderTest = new OrganicDog(NAME, DESCRIPTION, HUNGER, THIRST, -10, TIREDNESS, WASTE, HEALTH);
+		underTest = new OrganicCat(NAME, DESCRIPTION, 110, 110, 110, 110, 110, 110);
+		OrganicCat alsoUnderTest = new OrganicCat(NAME, DESCRIPTION, HUNGER, THIRST, -10, TIREDNESS, WASTE, HEALTH);
 		underTest.keepValuesInBounds();
 		alsoUnderTest.keepValuesInBounds();
 
@@ -96,15 +95,6 @@ public class OrganicDogTest {
 	}
 
 	@Test
-	public void goForWalkShouldRaiseOrLowerValues() {
-		underTest.goForWalk();
-
-		assertThat(underTest.getHappinessLevel(), is(80));
-		assertThat(underTest.getTirednessLevel(), is(90));
-		assertThat(underTest.getWasteLevel(), is(0));
-	}
-
-	@Test
 	public void shouldRaiseHealthLevelBySpecifiedAmount() {
 		underTest.raiseHealthLevel(10);
 
@@ -117,5 +107,4 @@ public class OrganicDogTest {
 
 		assertThat(underTest.getHealthLevel(), is(50));
 	}
-
 }

@@ -27,7 +27,7 @@ public class VirtualPetTest {
 	@Test
 	public void checkForValuesOver100ShouldKeepValuesFromGoingOver100() {
 		underTest = new VirtualPet(NAME, DESCRIPTION, 110, 110, 110, 110, 110, DISLIKED_FOOD_TYPE, HATED_FOOD_TYPE);
-		underTest.checkForValuesOver100();
+		underTest.keepValuesInBounds();
 
 		assertThat(underTest.getHungerLevel(), is(100));
 		assertThat(underTest.getThirstLevel(), is(100));
