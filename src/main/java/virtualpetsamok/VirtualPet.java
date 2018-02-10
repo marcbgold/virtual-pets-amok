@@ -58,6 +58,15 @@ public abstract class VirtualPet {
 	// }
 	//
 
+	public boolean equals(VirtualPet input) {
+		return name.hashCode() == input.hashCode();
+	}
+
+	@Override
+	public int hashCode() {
+		return name.hashCode();
+	}
+
 	@Override
 	public String toString() {
 		return name + ": " + description;

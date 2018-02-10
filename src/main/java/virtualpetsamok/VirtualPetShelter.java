@@ -7,7 +7,6 @@ import java.util.Map;
 public class VirtualPetShelter {
 
 	// TODO add health modifier method
-	// TODO add 1-to-1 dog/cage relationship
 
 	private Map<String, VirtualPet> roster = new HashMap<>();
 
@@ -26,9 +25,9 @@ public class VirtualPetShelter {
 	private int foodBowlLevel;
 	private int waterBowlLevel;
 	private int litterBoxLevel;
-	// private Map<VirtualPet, Cage> cageList = new HashMap<>();
+	private Map<VirtualPet, Cage> cageList = new HashMap<>();
 
-	private boolean floorHasCrapOnIt;
+	private boolean floorIsDirty;
 
 	public VirtualPetShelter() {
 		this(0);
@@ -57,12 +56,20 @@ public class VirtualPetShelter {
 		return litterBoxLevel >= getOrganicCatCount() * 2;
 	}
 
-	public boolean checkIfFloorHasCrapOnIt() {
-		return floorHasCrapOnIt;
+	public boolean checkIfFloorIsDirty() {
+		return floorIsDirty;
 	}
 
 	public void admitNewPet(VirtualPet petInput) {
 		roster.put(petInput.getName(), petInput);
+		if (petInput instanceof OrganicDog) {
+			cageList.put(petInput, new Cage());
+		}
+	}
+
+	public void admitNewDogWithDirtyCage(VirtualPet petInput, boolean dirtiness) {
+		roster.put(petInput.getName(), petInput);
+		cageList.put(petInput, new Cage(dirtiness));
 	}
 
 	public boolean checkIfPetExists(String name) {
@@ -98,6 +105,10 @@ public class VirtualPetShelter {
 	}
 
 	public void adoptOutPet(String name) {
+		VirtualPet pet = roster.get(name);
+		if (pet instanceof OrganicDog) {
+			cageList.remove(pet);
+		}
 		roster.remove(name);
 	}
 
@@ -126,8 +137,18 @@ public class VirtualPetShelter {
 		}
 	}
 
+	public boolean checkIfCageIsDirty(VirtualPet input) {
+		return cageList.get(input).getIsDirty();
+	}
+
+	public void cleanAllCages() {
+		for (Cage currentCage : cageList.values()) {
+			currentCage.cleanCage();
+		}
+	}
+
 	public void cleanFloor() {
-		floorHasCrapOnIt = false;
+		floorIsDirty = false;
 	}
 
 	public void walkAllDogs() {
@@ -198,11 +219,22 @@ public class VirtualPetShelter {
 					waterBowlLevel--;
 				}
 
+				if (orgPet instanceof OrganicDog) {
+					OrganicDog orgDog = (OrganicDog) orgPet;
+					if (orgDog.getWasteLevel() == 100 && checkIfCageIsDirty(orgDog)) {
+						orgDog.useBathroom();
+						floorIsDirty = true;
+					} else if (orgPet.getWasteLevel() >= 70 && !checkIfCageIsDirty(orgDog)) {
+						orgDog.useBathroom();
+						cageList.get(orgDog).addWaste();
+					}
+				}
+
 				if (orgPet instanceof OrganicCat) {
 					OrganicCat orgCat = (OrganicCat) orgPet;
 					if (orgCat.getWasteLevel() == 100 && checkIfLitterBoxesAreFull()) {
 						orgCat.useBathroom();
-						floorHasCrapOnIt = true;
+						floorIsDirty = true;
 					} else if (orgPet.getWasteLevel() >= 70 && !checkIfLitterBoxesAreFull()) {
 						orgCat.useBathroom();
 						litterBoxLevel++;
@@ -215,5 +247,4 @@ public class VirtualPetShelter {
 			}
 		}
 	}
-
 }

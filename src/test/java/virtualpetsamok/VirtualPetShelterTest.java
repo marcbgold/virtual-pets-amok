@@ -130,12 +130,47 @@ public class VirtualPetShelterTest {
 	}
 
 	@Test
-	public void organicCatShouldUseFloorWhenLitterBoxesAreFull() {
+	public void organicCatShouldUseBathroomOnFloorWhenLitterBoxesAreFull() {
 		OrganicCat extraCat = new OrganicCat("Extra", DESCRIPTION, 60, 60, 60, 60, 100, 60);
 		underTest.admitNewPet(extraCat);
 		underTest.petsTakeCareOfSelves();
 
-		assertThat(underTest.checkIfFloorHasCrapOnIt(), is(true));
+		assertThat(underTest.checkIfFloorIsDirty(), is(true));
+	}
+
+	@Test
+	public void organicDogShouldUseBathroomInCage() {
+		OrganicDog extraDog = new OrganicDog("Extra", DESCRIPTION, 60, 60, 60, 60, 100, 60);
+		underTest.admitNewPet(extraDog);
+		underTest.petsTakeCareOfSelves();
+
+		VirtualPet test = underTest.getPet("Extra");
+
+		boolean result = underTest.checkIfCageIsDirty(test);
+		assertThat(result, is(true));
+	}
+
+	@Test
+	public void organicDogShouldUseBathroomOnFloorWhenCageIsDirty() {
+		OrganicDog extraDog = new OrganicDog("Extra", DESCRIPTION, 60, 60, 60, 60, 100, 60);
+		underTest.admitNewDogWithDirtyCage(extraDog, true);
+		underTest.petsTakeCareOfSelves();
+
+		boolean result = underTest.checkIfFloorIsDirty();
+		assertThat(result, is(true));
+	}
+
+	@Test
+	public void shouldCleanAllCages() {
+		OrganicDog extraDog = new OrganicDog("Extra", DESCRIPTION, 60, 60, 60, 60, 100, 60);
+		underTest.admitNewPet(extraDog);
+		underTest.petsTakeCareOfSelves();
+		underTest.cleanAllCages();
+
+		VirtualPet test = underTest.getPet("Extra");
+
+		boolean result = underTest.checkIfCageIsDirty(test);
+		assertThat(result, is(false));
 	}
 
 	@Test

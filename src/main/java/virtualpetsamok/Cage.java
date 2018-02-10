@@ -4,7 +4,15 @@ public class Cage {
 
 	private boolean isDirty;
 
-	public boolean checkIfDirty() {
+	public Cage() {
+		this(false);
+	}
+
+	public Cage(boolean dirtiness) {
+		isDirty = dirtiness;
+	}
+
+	public boolean getIsDirty() {
 		return isDirty;
 	}
 
