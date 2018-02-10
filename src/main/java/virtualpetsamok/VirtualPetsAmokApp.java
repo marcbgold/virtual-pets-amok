@@ -11,9 +11,11 @@ public class VirtualPetsAmokApp {
 
 		Scanner input = new Scanner(System.in);
 		String choice;
-		String nameInput = null;
+		String nameInput;
 		String descriptionInput;
+		String typeInput;
 		String actionResult;
+		VirtualPet selectedPet = null;
 		Collection<VirtualPet> currentPetList;
 		Map<VirtualPet, Cage> currentCageList;
 
@@ -213,10 +215,49 @@ public class VirtualPetsAmokApp {
 				input.nextLine();
 				break;
 			case "9":
-				System.out.println("Please enter the name of the cat you would like to admit:");
+				typeInput = "";
+				System.out.println("Please choose the type of the pet you would like to admit:");
+				System.out.println("1. Organic");
+				System.out.println("2. Robotic");
+				choice = input.nextLine();
+
+				switch (choice) {
+				case "1":
+					typeInput = "O";
+					break;
+				case "2":
+					typeInput = "R";
+					break;
+				default:
+					System.out.println("Invalid type selection.");
+					System.out.println("Press enter to continue.");
+					input.nextLine();
+					continue;
+				}
+
+				System.out.println("Please choose the species of the pet you would like to admit:");
+				System.out.println("1. Dog");
+				System.out.println("2. Cat");
+				choice = input.nextLine();
+
+				switch (choice) {
+				case "1":
+					typeInput = typeInput + "D";
+					break;
+				case "2":
+					typeInput = typeInput + "C";
+					break;
+				default:
+					System.out.println("Invalid species selection.");
+					System.out.println("Press enter to continue.");
+					input.nextLine();
+					continue;
+				}
+
+				System.out.println("Please enter the name of the pet you would like to admit:");
 				nameInput = input.nextLine().trim();
 				if (nameInput.equals("")) {
-					nameInput = "Solid Cat";
+					nameInput = "Petty McPetface";
 				}
 				System.out.println();
 
@@ -229,40 +270,55 @@ public class VirtualPetsAmokApp {
 				}
 
 				if (myShelter.checkIfPetExists(nameInput)) {
-					System.out.println("There's already a cat with that name in this shelter.");
-					System.out.println("It'd be too confusing if two cats had the same name. Try a different one.");
+					System.out.println("There is already a pet with that name in this shelter.");
+					System.out.println("It would be too confusing if two pets had the same name. Try a different one.");
 					System.out.println("Press enter to continue.");
 					input.nextLine();
 					continue;
 				}
 
-				System.out.println("Please enter a description of this cat:");
+				System.out.println("Please enter a description of this pet:");
 				descriptionInput = input.nextLine().trim();
 				if (descriptionInput.equals("")) {
-					descriptionInput = "Cat? Cat?! Caaaaat!";
+					descriptionInput = "Not a boat.";
 				}
 				System.out.println();
 
-				myShelter.admitNewPet(descriptionInput);
+				switch (typeInput) {
+				case "OD":
+					selectedPet = new OrganicDog(nameInput, descriptionInput);
+					break;
+				case "OC":
+					selectedPet = new OrganicCat(nameInput, descriptionInput);
+					break;
+				case "RD":
+					selectedPet = new RobotDog(nameInput, descriptionInput);
+					break;
+				case "RC":
+					selectedPet = new RobotCat(nameInput, descriptionInput);
+					break;
+				}
+
+				myShelter.admitNewPet(selectedPet);
 
 				System.out.println(nameInput + " has successfully been admitted to the shelter.");
-				System.out.println("Please take good care of them.");
+				System.out.println("Please provide adequate care.");
 				System.out.println("Press enter to continue.");
 				input.nextLine();
 				break;
 			case "10":
-				System.out.println("Current Virtual Cat Roster");
+				System.out.println("Current Virtual Pet Roster");
 				System.out.println("---------------------------");
 				for (VirtualPet currentPet : currentPetList) {
-					System.out.println(currentPet);
+					System.out.println(currentPet.getName() + ": " + currentPet.getDescription());
 				}
 				System.out.println();
-				System.out.println("Please enter the name of the cat you would like to adopt out:");
+				System.out.println("Please enter the name of the pet you would like to adopt out:");
 				nameInput = input.nextLine().trim();
 				System.out.println();
 
 				if (!myShelter.checkIfPetExists(nameInput)) {
-					System.out.println("There is no cat with that name in the shelter.");
+					System.out.println("There is no pet with that name in this shelter.");
 					System.out.println("Press enter to continue.");
 					input.nextLine();
 					continue;
@@ -271,32 +327,33 @@ public class VirtualPetsAmokApp {
 				myShelter.adoptOutPet(nameInput);
 
 				System.out.println(nameInput + " has successfully been adopted out to a new home.");
-				System.out.println("Bye, " + nameInput + "! Have a good life!");
+				System.out.println("Goodbye, " + nameInput + "! Continue to provide optimum performance in a new physical location!");
 				System.out.println("Press enter to continue.");
 				input.nextLine();
 				break;
 			case "11":
-				System.out.println("Please enter the name of the cat whose description you would like to see:");
+				System.out.println("Please enter the name of the pet whose description you would like to see:");
 				nameInput = input.nextLine().trim();
 				System.out.println();
 
 				if (!myShelter.checkIfPetExists(nameInput)) {
-					System.out.println("There is no cat with that name in the shelter.");
+					System.out.println("There is no pet with that name in this shelter.");
 					System.out.println("Press enter to continue.");
 					input.nextLine();
 					continue;
 				}
 
-				System.out.println("OK, here's the description:");
+				selectedPet = myShelter.getPet(nameInput);
+				System.out.println("Verified. Here is the description:");
 				System.out.println();
-				System.out.println(myShelter.getPet(nameInput));
+				System.out.println(selectedPet.getName() + ": " + selectedPet.getDescription());
 				System.out.println();
 				System.out.println("Press enter to continue.");
 				input.nextLine();
 				continue;
 			case "12":
-				System.out.println("OK, I guess you can just stare at the cats if you feel like it.");
-				System.out.println("Don't stare for too long, though. You have work to do.");
+				System.out.println("It is possible to just stare at the pets if you feel like it.");
+				System.out.println("Do not stare for too long, though. You have work to do, human.");
 				System.out.println("Press enter to continue.");
 				input.nextLine();
 				break;
@@ -324,12 +381,12 @@ public class VirtualPetsAmokApp {
 		if (myShelter.checkIfPetIsDead())
 
 		{
-			System.out.println("OK, seriously.  Why did you never scoop out the litter boxes on time?!");
-			System.out.print("You forced the cats to go on the floor so many times that Animal Protection Services shut down the shelter");
-			System.out.println(" for being a health hazard!");
-			System.out.println("That's gross, and you suck.  Last time I ever let YOU help me with anything.");
+			System.out.println("Critical failure.  Your inattentiveness has allowed a pet to die.");
+			System.out.println("Now Virtual Animal Protection Services will come and shut down this shelter.");
+			System.out.println("You are a terrible person. I hope this knowledge will haunt you for the remainder of your organic lifespan.");
+			System.out.println("Goodbye.");
 		} else {
-			System.out.println("Bye! Thanks for volunteering. Come back later and help out again, OK?");
+			System.out.println("Goodbye, " + yourName + ". Thank you for volunteering. Please come back later and help out again.");
 		}
 		input.close();
 
