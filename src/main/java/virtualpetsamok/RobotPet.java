@@ -19,7 +19,7 @@ public abstract class RobotPet extends VirtualPet {
 		return chargeLevel;
 	}
 
-	public void getOiled() {
+	public void oil() {
 		oilLevel = 100;
 		chargeLevel -= 10;
 

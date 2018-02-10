@@ -38,7 +38,7 @@ public class RobotCatTest {
 
 	@Test
 	public void getOiledShouldRaiseOrLowerLevels() {
-		underTest.getOiled();
+		underTest.oil();
 
 		assertThat(underTest.getOilLevel(), is(100));
 		assertThat(underTest.getChargeLevel(), is(40));

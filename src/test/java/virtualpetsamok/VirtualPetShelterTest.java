@@ -138,4 +138,32 @@ public class VirtualPetShelterTest {
 		assertThat(underTest.checkIfFloorHasCrapOnIt(), is(true));
 	}
 
+	@Test
+	public void shouldOilAllRobots() {
+		RobotDog extraRobot = new RobotDog("extra", DESCRIPTION);
+		underTest.admitNewPet(extraRobot);
+		underTest.oilAllRobots();
+
+		RobotCat glados = (RobotCat) underTest.getPet("GLaDOS");
+		extraRobot = (RobotDog) underTest.getPet("extra");
+
+		assertThat(glados.getOilLevel(), is(100));
+		assertThat(extraRobot.getOilLevel(), is(100));
+
+	}
+
+	@Test
+	public void shouldChargeAllRobots() {
+		RobotDog extraRobot = new RobotDog("extra", DESCRIPTION);
+		underTest.admitNewPet(extraRobot);
+		underTest.chargeAllRobots();
+
+		RobotCat glados = (RobotCat) underTest.getPet("GLaDOS");
+		extraRobot = (RobotDog) underTest.getPet("extra");
+
+		assertThat(glados.getChargeLevel(), is(100));
+		assertThat(extraRobot.getChargeLevel(), is(100));
+
+	}
+
 }

@@ -6,10 +6,12 @@ import java.util.Map;
 
 public class VirtualPetShelter {
 
+	// TODO add health modifier method
 	// TODO add cage class
 	// TODO add 1-to-1 dog/cage relationship
 	// TODO add ability to walk all dogs
 	// TODO add ability to oil all robots
+	// TODO add ability to charge all robots
 
 	private Map<String, VirtualPet> roster = new HashMap<>();
 
@@ -81,7 +83,7 @@ public class VirtualPetShelter {
 
 	public int getOrganicPetCount() {
 		int count = 0;
-		for (VirtualPet i : getAllPets()) {
+		for (VirtualPet i : roster.values()) {
 			if (i instanceof OrganicPet) {
 				count++;
 			}
@@ -91,7 +93,7 @@ public class VirtualPetShelter {
 
 	public int getOrganicCatCount() {
 		int count = 0;
-		for (VirtualPet i : getAllPets()) {
+		for (VirtualPet i : roster.values()) {
 			if (i instanceof OrganicCat) {
 				count++;
 			}
@@ -159,6 +161,22 @@ public class VirtualPetShelter {
 		floorHasCrapOnIt = false;
 	}
 
+	public void oilAllRobots() {
+		for (VirtualPet currentPet : roster.values()) {
+			if (currentPet instanceof RobotPet) {
+				((RobotPet) currentPet).oil();
+			}
+		}
+	}
+
+	public void chargeAllRobots() {
+		for (VirtualPet currentPet : roster.values()) {
+			if (currentPet instanceof RobotPet) {
+				((RobotPet) currentPet).recharge();
+			}
+		}
+	}
+
 	public void petsTakeCareOfSelves() {
 		for (VirtualPet currentPet : getAllPets()) {
 			currentPet.tick();
@@ -193,4 +211,5 @@ public class VirtualPetShelter {
 			}
 		}
 	}
+
 }
