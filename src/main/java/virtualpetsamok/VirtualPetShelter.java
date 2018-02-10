@@ -1,8 +1,8 @@
 package virtualpetsamok;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 
 public class VirtualPetShelter {
@@ -73,7 +73,7 @@ public class VirtualPetShelter {
 		}
 	}
 
-	public void admitNewDogWithDirtyCage(VirtualPet petInput, boolean dirtiness) {
+	public void admitNewDogWithDirtyCage(VirtualPet petInput, int dirtiness) {
 		roster.put(petInput.getName(), petInput);
 		cageList.put(petInput, new Cage(dirtiness));
 	}
@@ -91,26 +91,42 @@ public class VirtualPetShelter {
 	}
 
 	public Collection<VirtualPet> getAllOrganicPets() {
-		Collection<VirtualPet> organics = roster.values();
-		Iterator<VirtualPet> itr = organics.iterator();
+		Collection<VirtualPet> organics = new ArrayList<>();
 
-		while (itr.hasNext()) {
-			if (!(itr.next() instanceof OrganicPet)) {
-				itr.remove();
+		for (VirtualPet currentPet : roster.values()) {
+			if (currentPet instanceof OrganicPet) {
+				organics.add(currentPet);
 			}
 		}
+
+		// Collection<VirtualPet> organics = roster.values();
+		// Iterator<VirtualPet> itr = organics.iterator();
+		//
+		// while (itr.hasNext()) {
+		// if (!(itr.next() instanceof OrganicPet)) {
+		// itr.remove();
+		// }
+		// }
 		return organics;
 	}
 
 	public Collection<VirtualPet> getAllRobotPets() {
-		Collection<VirtualPet> robots = roster.values();
-		Iterator<VirtualPet> itr = robots.iterator();
+		Collection<VirtualPet> robots = new ArrayList<>();
 
-		while (itr.hasNext()) {
-			if (!(itr.next() instanceof RobotPet)) {
-				itr.remove();
+		for (VirtualPet currentPet : roster.values()) {
+			if (currentPet instanceof RobotPet) {
+				robots.add(currentPet);
 			}
 		}
+
+		// Collection<VirtualPet> robots = roster.values();
+		// Iterator<VirtualPet> itr = robots.iterator();
+		//
+		// while (itr.hasNext()) {
+		// if (!(itr.next() instanceof RobotPet)) {
+		// itr.remove();
+		// }
+		// }
 		return robots;
 	}
 
@@ -171,8 +187,8 @@ public class VirtualPetShelter {
 		}
 	}
 
-	public boolean checkIfCageIsDirty(VirtualPet input) {
-		return cageList.get(input).getIsDirty();
+	public int getCageWasteLevel(VirtualPet input) {
+		return cageList.get(input).getWasteLevel();
 	}
 
 	public void cleanAllCages() {
@@ -255,10 +271,10 @@ public class VirtualPetShelter {
 
 				if (orgPet instanceof OrganicDog) {
 					OrganicDog orgDog = (OrganicDog) orgPet;
-					if (orgDog.getWasteLevel() == 100 && checkIfCageIsDirty(orgDog)) {
+					if (orgDog.getWasteLevel() == 100 && getCageWasteLevel(orgDog) >= 2) {
 						orgDog.useBathroom();
 						floorIsDirty = true;
-					} else if (orgPet.getWasteLevel() >= 70 && !checkIfCageIsDirty(orgDog)) {
+					} else if (orgPet.getWasteLevel() >= 70 && getCageWasteLevel(orgDog) < 3) {
 						orgDog.useBathroom();
 						cageList.get(orgDog).addWaste();
 					}
@@ -307,7 +323,7 @@ public class VirtualPetShelter {
 					orgPet.lowerHealthLevel(10);
 					healthDropped = true;
 				}
-				if (orgPet instanceof OrganicDog && checkIfCageIsDirty(orgPet)) {
+				if (orgPet instanceof OrganicDog && getCageWasteLevel(orgPet) >= 2) {
 					orgPet.lowerHealthLevel(10);
 					healthDropped = true;
 				}
@@ -325,7 +341,7 @@ public class VirtualPetShelter {
 			}
 
 			if (!healthDropped) {
-				currentPet.raiseHealthLevel(10);
+				currentPet.raiseHealthLevel(20);
 			}
 		}
 

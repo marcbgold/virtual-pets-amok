@@ -146,14 +146,14 @@ public class VirtualPetShelterTest {
 
 		VirtualPet test = underTest.getPet("Extra");
 
-		boolean result = underTest.checkIfCageIsDirty(test);
-		assertThat(result, is(true));
+		int result = underTest.getCageWasteLevel(test);
+		assertThat(result, is(1));
 	}
 
 	@Test
 	public void organicDogShouldUseBathroomOnFloorWhenCageIsDirty() {
 		OrganicDog extraDog = new OrganicDog("Extra", DESCRIPTION, 60, 60, 60, 60, 100, 60);
-		underTest.admitNewDogWithDirtyCage(extraDog, true);
+		underTest.admitNewDogWithDirtyCage(extraDog, 3);
 		underTest.petsTakeCareOfSelves();
 
 		boolean result = underTest.checkIfFloorIsDirty();
@@ -169,8 +169,8 @@ public class VirtualPetShelterTest {
 
 		VirtualPet test = underTest.getPet("Extra");
 
-		boolean result = underTest.checkIfCageIsDirty(test);
-		assertThat(result, is(false));
+		int result = underTest.getCageWasteLevel(test);
+		assertThat(result, is(0));
 	}
 
 	@Test
@@ -210,8 +210,8 @@ public class VirtualPetShelterTest {
 		OrganicDog crono = (OrganicDog) underTest.getPet("Crono");
 		extraRobot = (RobotDog) underTest.getPet("extra");
 
-		assertThat(crono.getHappinessLevel(), is(70));
-		assertThat(extraRobot.getHappinessLevel(), is(70));
+		assertThat(crono.getHappinessLevel(), is(90));
+		assertThat(extraRobot.getHappinessLevel(), is(90));
 	}
 
 }

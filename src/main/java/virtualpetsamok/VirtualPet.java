@@ -36,6 +36,9 @@ public abstract class VirtualPet {
 
 	public void raiseHealthLevel(int amount) {
 		healthLevel += amount;
+		if (healthLevel > 100) {
+			healthLevel = 100;
+		}
 	}
 
 	public void lowerHealthLevel(int amount) {
@@ -48,8 +51,6 @@ public abstract class VirtualPet {
 
 	public abstract void keepValuesInBounds();
 
-	
-
 	public boolean equals(VirtualPet input) {
 		return name.hashCode() == input.hashCode();
 	}
@@ -59,10 +60,10 @@ public abstract class VirtualPet {
 		return name.hashCode();
 	}
 
-//	@Override
-//	public String toString() {
-//		return name + ": " + description;
-//	}
+	// @Override
+	// public String toString() {
+	// return name + ": " + description;
+	// }
 
 	@Override
 	public String toString() {

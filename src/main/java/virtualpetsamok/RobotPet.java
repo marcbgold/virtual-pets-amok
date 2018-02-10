@@ -68,4 +68,9 @@ public abstract class RobotPet extends VirtualPet {
 		if (healthLevel > 100)
 			healthLevel = 100;
 	}
+
+	@Override
+	public String toString() {
+		return super.toString();
+	}
 }

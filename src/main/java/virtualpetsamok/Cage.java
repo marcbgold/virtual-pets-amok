@@ -2,25 +2,25 @@ package virtualpetsamok;
 
 public class Cage {
 
-	private boolean isDirty;
+	private int wasteLevel;
 
 	public Cage() {
-		this(false);
+		this(0);
 	}
 
-	public Cage(boolean dirtiness) {
-		isDirty = dirtiness;
+	public Cage(int dirtiness) {
+		wasteLevel = dirtiness;
 	}
 
-	public boolean getIsDirty() {
-		return isDirty;
+	public int getWasteLevel() {
+		return wasteLevel;
 	}
 
 	public void addWaste() {
-		isDirty = true;
+		wasteLevel++;
 	}
 
 	public void cleanCage() {
-		isDirty = false;
+		wasteLevel = 0;
 	}
 }
