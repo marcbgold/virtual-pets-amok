@@ -271,7 +271,7 @@ public class VirtualPetShelter {
 
 				if (orgPet instanceof OrganicDog) {
 					OrganicDog orgDog = (OrganicDog) orgPet;
-					if (orgDog.getWasteLevel() == 100 && getCageWasteLevel(orgDog) >= 2) {
+					if (orgDog.getWasteLevel() == 100 && getCageWasteLevel(orgDog) > 2) {
 						orgDog.useBathroom();
 						floorIsDirty = true;
 					} else if (orgPet.getWasteLevel() >= 70 && getCageWasteLevel(orgDog) < 3) {

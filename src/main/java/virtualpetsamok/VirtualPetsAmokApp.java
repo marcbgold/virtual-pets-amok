@@ -65,8 +65,11 @@ public class VirtualPetsAmokApp {
 					System.out.println(entry.getKey().getName() + "'s cage is slightly dirty.");
 				} else if (entry.getValue().getWasteLevel() == 2) {
 					System.out.println(entry.getKey().getName() + "'s cage is very dirty.");
+				} else if (entry.getValue().getWasteLevel() > 2) {
+					System.out.println(entry.getKey().getName() + "'s cage is abjectly disgusting. Stop ignoring it and clean it already.");
 				}
 			}
+
 			if (myShelter.checkIfFloorIsDirty()) {
 				System.out.println("Someone went on the floor. Gross. Clean that up immediately.");
 				System.out.println();
