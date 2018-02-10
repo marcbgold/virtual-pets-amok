@@ -60,7 +60,6 @@ public abstract class OrganicPet extends VirtualPet {
 	public void sleep() {
 		hungerLevel += 20;
 		thirstLevel += 20;
-		happinessLevel -= 20;
 		tirednessLevel = 0;
 
 		keepValuesInBounds();

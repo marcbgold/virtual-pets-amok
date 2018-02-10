@@ -72,7 +72,6 @@ public class OrganicCatTest {
 
 		assertThat(underTest.getHungerLevel(), is(80));
 		assertThat(underTest.getThirstLevel(), is(80));
-		assertThat(underTest.getHappinessLevel(), is(40));
 		assertThat(underTest.getTirednessLevel(), is(0));
 	}
 

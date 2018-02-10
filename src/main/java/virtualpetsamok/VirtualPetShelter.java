@@ -7,11 +7,7 @@ import java.util.Map;
 public class VirtualPetShelter {
 
 	// TODO add health modifier method
-	// TODO add cage class
 	// TODO add 1-to-1 dog/cage relationship
-	// TODO add ability to walk all dogs
-	// TODO add ability to oil all robots
-	// TODO add ability to charge all robots
 
 	private Map<String, VirtualPet> roster = new HashMap<>();
 
@@ -105,6 +101,59 @@ public class VirtualPetShelter {
 		roster.remove(name);
 	}
 
+	public String putOutFood() {
+		if (foodBowlLevel < getOrganicPetCount() * 2) {
+			foodBowlLevel = getOrganicPetCount() * 2;
+			return "success";
+		}
+		return "no need";
+	}
+
+	public String putOutWater() {
+		if (waterBowlLevel < getOrganicPetCount() * 2) {
+			waterBowlLevel = getOrganicPetCount() * 2;
+			return "success";
+		}
+		return "no need";
+	}
+
+	public String scoopLitterBox() {
+		if (litterBoxLevel == 0) {
+			return "no need";
+		} else {
+			litterBoxLevel = 0;
+			return "success";
+		}
+	}
+
+	public void cleanFloor() {
+		floorHasCrapOnIt = false;
+	}
+
+	public void walkAllDogs() {
+		for (VirtualPet currentPet : roster.values()) {
+			if (currentPet instanceof Walkable) {
+				((Walkable) currentPet).goForWalk();
+			}
+		}
+	}
+
+	public void oilAllRobots() {
+		for (VirtualPet currentPet : roster.values()) {
+			if (currentPet instanceof RobotPet) {
+				((RobotPet) currentPet).oil();
+			}
+		}
+	}
+
+	public void chargeAllRobots() {
+		for (VirtualPet currentPet : roster.values()) {
+			if (currentPet instanceof RobotPet) {
+				((RobotPet) currentPet).recharge();
+			}
+		}
+	}
+
 	public String playWithPet(String name) {
 		VirtualPet pet = getPet(name);
 		if (pet.getHealthLevel() <= 30) {
@@ -130,51 +179,6 @@ public class VirtualPetShelter {
 		}
 		pet.play();
 		return "success";
-	}
-
-	public String putOutFood() {
-		if (foodBowlLevel < getOrganicPetCount() * 2) {
-			foodBowlLevel = getOrganicPetCount() * 2;
-			return "success";
-		}
-		return "no need";
-	}
-
-	public String putOutWater() {
-		if (waterBowlLevel < getOrganicPetCount() * 2) {
-			waterBowlLevel = getOrganicPetCount() * 2;
-			return "success";
-		}
-		return "no need";
-	}
-
-	public String scoopLitterBoxes() {
-		if (litterBoxLevel == 0) {
-			return "no need";
-		} else {
-			litterBoxLevel = 0;
-			return "success";
-		}
-	}
-
-	public void cleanFloor() {
-		floorHasCrapOnIt = false;
-	}
-
-	public void oilAllRobots() {
-		for (VirtualPet currentPet : roster.values()) {
-			if (currentPet instanceof RobotPet) {
-				((RobotPet) currentPet).oil();
-			}
-		}
-	}
-
-	public void chargeAllRobots() {
-		for (VirtualPet currentPet : roster.values()) {
-			if (currentPet instanceof RobotPet) {
-				((RobotPet) currentPet).recharge();
-			}
-		}
 	}
 
 	public void petsTakeCareOfSelves() {

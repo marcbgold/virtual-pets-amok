@@ -170,7 +170,7 @@ public class VirtualPetsAmokApp {
 				choice = input.nextLine();
 				System.out.println();
 
-				actionResult = myShelter.scoopLitterBoxes();
+				actionResult = myShelter.scoopLitterBox();
 
 				if (!actionResult.equals("success")) {
 					if (actionResult.equals("invalid number")) {

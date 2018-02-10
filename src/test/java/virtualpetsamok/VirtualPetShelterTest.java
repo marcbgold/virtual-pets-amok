@@ -48,7 +48,7 @@ public class VirtualPetShelterTest {
 
 	@Test
 	public void scoopLitterBoxShouldLowerLitterBoxLevelToZero() {
-		underTest.scoopLitterBoxes();
+		underTest.scoopLitterBox();
 
 		assertThat(underTest.getLitterBoxLevel(), is(0));
 	}
@@ -121,7 +121,7 @@ public class VirtualPetShelterTest {
 
 		underTest.putOutFood();
 		underTest.putOutWater();
-		underTest.scoopLitterBoxes();
+		underTest.scoopLitterBox();
 		underTest.petsTakeCareOfSelves();
 
 		assertThat(underTest.getFoodBowlLevel(), is(7));
@@ -163,6 +163,20 @@ public class VirtualPetShelterTest {
 
 		assertThat(glados.getChargeLevel(), is(100));
 		assertThat(extraRobot.getChargeLevel(), is(100));
+
+	}
+
+	@Test
+	public void shouldWalkAllDogs() {
+		RobotDog extraRobot = new RobotDog("extra", DESCRIPTION);
+		underTest.admitNewPet(extraRobot);
+		underTest.walkAllDogs();
+
+		OrganicDog crono = (OrganicDog) underTest.getPet("Crono");
+		extraRobot = (RobotDog) underTest.getPet("extra");
+
+		assertThat(crono.getHappinessLevel(), is(70));
+		assertThat(extraRobot.getHappinessLevel(), is(70));
 
 	}
 
