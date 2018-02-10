@@ -3,62 +3,51 @@ package virtualpetsamok;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Map.Entry;
 
 public class VirtualPetShelter {
 
-	// TODO add organic/robot classes
-	// TODO add walkable interfact
-	// TODO add shitbox class
+	// TODO add cage class
 	// TODO add 1-to-1 dog/cage relationship
 	// TODO remove multiple litterboxes and raise max litterbox level
 
 	private Map<String, VirtualPet> roster = new HashMap<>();
 	private final String DEFAULT_NAME = "Mario";
 	private final String DEFAULT_DESCRIPTION = "Short, fat, male tabby with bushy, kinda reddish fur.  Seems to like mushrooms and flowers for some odd reason.";
+	private final OrganicCat defaultPet = new OrganicCat(DEFAULT_NAME, DEFAULT_DESCRIPTION);
 	private int foodBowlLevel;
-	private int foodType;
 	private int waterBowlLevel;
-	private Map<String, Integer> litterBoxes = new HashMap<>();
+	private int litterBoxLevel;
+	// private Map<VirtualPet, Cage> cageList = new HashMap<>();
 
-	private int petHasUsedFloorCount;
+	private boolean floorHasCrapOnIt;
 
 	public VirtualPetShelter() {
 		this(0);
 	}
 
 	public VirtualPetShelter(int litterBoxLevel) {
-		litterBoxes.put("1", litterBoxLevel);
-		admitNewPet(DEFAULT_NAME, DEFAULT_DESCRIPTION);
+		this.litterBoxLevel = litterBoxLevel;
+		admitNewPet(defaultPet);
 	}
 
 	public int getFoodBowlLevel() {
 		return foodBowlLevel;
 	}
 
-	public int getFoodType() {
-		return foodType;
-	}
-
 	public int getWaterBowlLevel() {
 		return waterBowlLevel;
 	}
 
-	public int getLitterBoxLevel(String litterBoxNum) {
-		return litterBoxes.get(litterBoxNum);
+	public int getLitterBoxLevel() {
+		return litterBoxLevel;
 	}
 
-	public int getPetHasUsedFloorCount() {
-		return petHasUsedFloorCount;
+	public boolean getFloorHasCrapOnIt() {
+		return floorHasCrapOnIt;
 	}
 
-	public void admitNewPet(String name, String description) {
-		roster.put(name, new VirtualPet(name, description));
-	}
-
-	public void admitNewPetWithSpecialValues(String name, String description, int hunger, int thirst, int boredom, int tiredness, int waste, int dislikedFoodType,
-			int hatedFoodType) {
-		roster.put(name, new VirtualPet(name, description, hunger, thirst, boredom, tiredness, waste, dislikedFoodType, hatedFoodType));
+	public void admitNewPet(VirtualPet petInput) {
+		roster.put(petInput.getName(), petInput);
 	}
 
 	public boolean checkIfPetExists(String name) {
@@ -73,65 +62,89 @@ public class VirtualPetShelter {
 		return roster.values();
 	}
 
+	public int getOrganicPetCount() {
+		int count = 0;
+		for (VirtualPet i : getAllPets()) {
+			if (i instanceof OrganicPet) {
+				count++;
+			}
+		}
+		return count;
+	}
+
 	public void adoptOutPet(String name) {
 		roster.remove(name);
 	}
 
 	public String playWithPet(String name) {
 		VirtualPet pet = getPet(name);
-		if (pet.getBoredomLevel() < 50) {
-			return "not bored enough";
-		} else if (pet.getTirednessLevel() >= 80) {
-			return "too tired";
-		} else if (pet.getHungerLevel() >= 80) {
-			return "too hungry";
-		} else {
-			pet.play();
-			return "success";
+		if (pet.getHealthLevel() <= 30) {
+			return "too unhealthy";
 		}
+
+		if (pet instanceof OrganicPet) {
+			OrganicPet orgPet = (OrganicPet) pet;
+			if (orgPet.getTirednessLevel() >= 80) {
+				return "too tired";
+			} else if (orgPet.getHungerLevel() >= 80) {
+				return "too hungry";
+			}
+		}
+
+		if (pet instanceof RobotPet) {
+			RobotPet roboPet = (RobotPet) pet;
+			if (roboPet.getOilLevel() <= 20) {
+				return "oil too low";
+			} else if (roboPet.getChargeLevel() <= 20) {
+				return "charge too low";
+			}
+		}
+		pet.play();
+		return "success";
 	}
 
-	public void putOutFood(int foodType) {
-		foodBowlLevel = roster.size() * 2;
-		this.foodType = foodType;
-	}
-
-	public String putOutWater() {
-		if (waterBowlLevel < roster.size() * 2) {
-			waterBowlLevel = roster.size() * 2;
+	public String putOutFood() {
+		if (foodBowlLevel < getOrganicPetCount() * 2) {
+			foodBowlLevel = getOrganicPetCount() * 2;
 			return "success";
 		}
 		return "no need";
 	}
 
-	public Map<String, Integer> getAllLitterBoxes() {
-		return litterBoxes;
+	public String putOutWater() {
+		if (waterBowlLevel < getOrganicPetCount() * 2) {
+			waterBowlLevel = getOrganicPetCount() * 2;
+			return "success";
+		}
+		return "no need";
 	}
 
-	public String scoopLitterBox(String litterBoxNumber) {
-		if (!litterBoxes.containsKey(litterBoxNumber)) {
-			return "invalid number";
-		} else if (litterBoxes.get(litterBoxNumber) == 0) {
+	// public Map<String, Integer> getAllLitterBoxes() {
+	// return litterBoxes;
+	// }
+
+	public String scoopLitterBoxes() {
+		if (litterBoxLevel == 0) {
 			return "no need";
+		} else {
+			litterBoxLevel = 0;
+			return "success";
 		}
-
-		litterBoxes.put(litterBoxNumber, 0);
-		return "success";
 	}
 
-	public void addLitterBox() {
-		int currentSize = litterBoxes.size();
-		litterBoxes.put(Integer.toString(currentSize + 1), 0);
-	}
-
-	public String findCleanLitterBox() {
-		for (Entry<String, Integer> entry : litterBoxes.entrySet()) {
-			if (Integer.valueOf(entry.getValue()) < 3) {
-				return entry.getKey();
-			}
-		}
-		return "0";
-	}
+	// public void addLitterBox() {
+	// int currentSize = litterBoxes.size();
+	// litterBoxes.put(Integer.toString(currentSize + 1), 0);
+	// }
+	//
+	// public String findCleanLitterBox() {
+	// for (Entry<String, Integer> entry : litterBoxes.entrySet()) {
+	// if (Integer.valueOf(entry.getValue()) < 3) {
+	// return entry.getKey();
+	// }
+	// }
+	// return "0";
+	// }
 
 	public void petsTakeCareOfSelves() {
 		for (VirtualPet currentPet : getAllPets()) {

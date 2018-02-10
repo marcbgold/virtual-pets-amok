@@ -11,11 +11,11 @@ public abstract class RobotPet extends VirtualPet {
 		chargeLevel = charge;
 	}
 
-	public Object getOilLevel() {
+	public int getOilLevel() {
 		return oilLevel;
 	}
 
-	public Object getChargeLevel() {
+	public int getChargeLevel() {
 		return chargeLevel;
 	}
 

@@ -170,7 +170,7 @@ public class VirtualPetsAmokApp {
 				choice = input.nextLine();
 				System.out.println();
 
-				actionResult = myShelter.scoopLitterBox(choice);
+				actionResult = myShelter.scoopLitterBoxes();
 
 				if (!actionResult.equals("success")) {
 					if (actionResult.equals("invalid number")) {
@@ -226,7 +226,7 @@ public class VirtualPetsAmokApp {
 				}
 				System.out.println();
 
-				myShelter.admitNewPet(nameInput, descriptionInput);
+				myShelter.admitNewPet(descriptionInput);
 
 				System.out.println(nameInput + " has successfully been admitted to the shelter.");
 				System.out.println("Please take good care of them.");
