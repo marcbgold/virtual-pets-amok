@@ -2,6 +2,7 @@ package virtualpetsamok;
 
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 
 public class VirtualPetShelter {
@@ -19,7 +20,7 @@ public class VirtualPetShelter {
 	private final OrganicCat defaultOrganicCat = new OrganicCat(organicCatName, organicCatDescription);
 
 	private final String robotCatName = "GLaDOS";
-	private final String robotCatDescription = "Mostly white with large, yellow eyes.  Seems to always be mocking you.  Possibly wants to kill you.";
+	private final String robotCatDescription = "Mostly white with large, yellow eyes.  Seems to always be mocking you.  Possibly wants to kill you.  Hates potatoes.";
 	private final RobotCat defaultRobotPet = new RobotCat(robotCatName, robotCatDescription);
 
 	private int foodBowlLevel;
@@ -61,6 +62,10 @@ public class VirtualPetShelter {
 		return floorIsDirty;
 	}
 
+	public boolean checkIfPetIsDead() {
+		return petIsDead;
+	}
+
 	public void admitNewPet(VirtualPet petInput) {
 		roster.put(petInput.getName(), petInput);
 		if (petInput instanceof Cageable) {
@@ -85,6 +90,30 @@ public class VirtualPetShelter {
 		return roster.values();
 	}
 
+	public Collection<VirtualPet> getAllOrganicPets() {
+		Collection<VirtualPet> organics = roster.values();
+		Iterator<VirtualPet> itr = organics.iterator();
+
+		while (itr.hasNext()) {
+			if (!(itr.next() instanceof OrganicPet)) {
+				itr.remove();
+			}
+		}
+		return organics;
+	}
+
+	public Collection<VirtualPet> getAllRobotPets() {
+		Collection<VirtualPet> robots = roster.values();
+		Iterator<VirtualPet> itr = robots.iterator();
+
+		while (itr.hasNext()) {
+			if (!(itr.next() instanceof RobotPet)) {
+				itr.remove();
+			}
+		}
+		return robots;
+	}
+
 	public int getOrganicPetCount() {
 		int count = 0;
 		for (VirtualPet i : roster.values()) {
@@ -103,6 +132,10 @@ public class VirtualPetShelter {
 			}
 		}
 		return count;
+	}
+
+	public Map<VirtualPet, Cage> getAllCages() {
+		return cageList;
 	}
 
 	public void adoptOutPet(String name) {

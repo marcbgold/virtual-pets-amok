@@ -15,11 +15,11 @@ public class VirtualPetsAmokApp {
 		String descriptionInput;
 		String actionResult;
 		Collection<VirtualPet> currentPetList;
-		Map<String, Integer> currentLitterBoxList;
+		Map<VirtualPet, Cage> currentCageList;
 
 		VirtualPetShelter myShelter = new VirtualPetShelter();
 
-		System.out.println("Welcome to Crazy Bob's Virtual Cat Shelter for Computer-Based Cat Units.");
+		System.out.println("Welcome to Flexible Capacity Shelter #32098-AXA-8 for Virtual Pet Units.");
 		System.out.println("Thank you for volunteering your time here.");
 		System.out.println("Please enter your name, so that we can address you properly.");
 		String yourName = input.nextLine().trim();
@@ -32,54 +32,123 @@ public class VirtualPetsAmokApp {
 			System.out.println();
 			System.out.println("Volunteer Menu for " + yourName + " the Human");
 			System.out.println();
-			System.out.println("Current Virtual Cat Roster");
+			System.out.println("Current Organic Pet Roster");
 			System.out.println("---------------------------");
-			System.out.println("Name\t\t|Hunger\t|Thirst\t|Boredom |Tiredness \t|\"Waste\"");
+			System.out.println("Name\t\t|Hunger\t|Thirst\t|Happiness |Tiredness \t|\"Waste\"\t|Health");
 
-			currentPetList = myShelter.getAllPets();
+			currentPetList = myShelter.getAllOrganicPets();
 			for (VirtualPet currentPet : currentPetList) {
-				System.out.println(currentPet.getStats());
+				System.out.println(currentPet);
+			}
+
+			System.out.println();
+			System.out.println("Current Robot Pet Roster");
+			System.out.println("---------------------------");
+			System.out.println("Name\t\t|Oil\t|Happiness |Charge\t |Health");
+
+			currentPetList = myShelter.getAllRobotPets();
+			for (VirtualPet currentPet : currentPetList) {
+				System.out.println(currentPet);
 			}
 
 			System.out.println();
 			System.out.println("Food Bowl Levels: " + myShelter.getFoodBowlLevel());
-			if (myShelter.getFoodBowlLevel() > 0) {
-				System.out.print("Food Type: ");
-				if (myShelter.getFoodType() == 1)
-					System.out.println("Trader Moe's dry food");
-				else if (myShelter.getFoodType() == 2)
-					System.out.println("Fancier Feast premium wet food");
-				else if (myShelter.getFoodType() == 3)
-					System.out.println("Raw meat");
-				else
-					System.out.println("Table scraps");
-			}
 			System.out.println("Water Bowl Levels: " + myShelter.getWaterBowlLevel());
-			System.out.println("Litter Box Levels");
-			System.out.println("------------------");
-			currentLitterBoxList = myShelter.getAllLitterBoxes();
-			for (Entry<String, Integer> entry : currentLitterBoxList.entrySet()) {
-				System.out.println("Box #" + entry.getKey() + ": " + entry.getValue());
+			System.out.println("Litter Box Levels: " + myShelter.getLitterBoxLevel());
+			System.out.println();
+
+			currentCageList = myShelter.getAllCages();
+			for (Entry<VirtualPet, Cage> entry : currentCageList.entrySet()) {
+				if (entry.getValue().getIsDirty()) {
+					System.out.println(entry.getKey().getName() + "'s cage is dirty.");
+				}
 			}
+			System.out.println();
+			if (myShelter.checkIfFloorIsDirty()) {
+				System.out.println("The floor is dirty.");
+			}
+
+			// System.out.println();
+			// System.out.println("What do you want to do?");
+			// System.out.println();
+			// System.out.println("1. Play with a pet");
+			// System.out.println("2. Put out food");
+			// System.out.println("3. Put out water");
+			// System.out.println("4. Scoop out the litter boxes");
+			// System.out.println("5. Clean all the cages");
+			// System.out.println("6. Admit new cat to shelter");
+			// System.out.println("7. ");
+			// System.out.println("7. Adopt out cat");
+			// System.out.println("8. Look at the description of a pet");
+			// System.out.println("9. Loaf around");
+			// System.out.println("10. Quit");
 
 			System.out.println();
 			System.out.println("What do you want to do?");
 			System.out.println();
-			System.out.println("1. Play with a cat");
-			System.out.println("2. Put out food");
-			System.out.println("3. Put out water");
-			System.out.println("4. Scoop out a litter box");
-			System.out.println("5. Add an additional litter box");
-			System.out.println("6. Admit new cat to shelter");
-			System.out.println("7. Adopt out cat");
-			System.out.println("8. Look at the description of a cat");
-			System.out.println("9. Loaf around");
-			System.out.println("10. Quit");
+			System.out.println("1. Put out food\t\t\t|2. Put out water");
+			System.out.println("3. Clean all cages\t\t\t|4. Scoop out all litter boxes");
+			System.out.println("5. Play with a pet\t\t\t|6. Walk all dogs");
+			System.out.println("7. Oil all robots\t\t\t|8. Recharge all robots");
+			System.out.println("9. Admit new pet to shelter\t\t\t|10. Adopt out pet");
+			System.out.println("11. Look at description of a pet\t|12. Loaf around");
+			System.out.println("13. Quit");
+			if (myShelter.checkIfFloorIsDirty()) {
+				System.out.println("14. Clean floor");
+			}
 			choice = input.nextLine();
 			System.out.println();
 
 			switch (choice) {
 			case "1":
+				actionResult = myShelter.putOutFood();
+
+				if (actionResult.equals("no need")) {
+					System.out.println("The food bowls are all already full. No need to put out more food right now.");
+					System.out.println("Press enter to continue.");
+					input.nextLine();
+					continue;
+				}
+
+				System.out.println("You refilled the food bowls. Now the pets will have plenty to eat.");
+				System.out.println("Press enter to continue.");
+				input.nextLine();
+				break;
+			case "2":
+				actionResult = myShelter.putOutWater();
+
+				if (actionResult.equals("no need")) {
+					System.out.println("The water bowls are all already full. No need to put out more water right now.");
+					System.out.println("Press enter to continue.");
+					input.nextLine();
+					continue;
+				}
+
+				System.out.println("You refilled the water bowls. Now the pets will have plenty to drink.");
+				System.out.println("Press enter to continue.");
+				input.nextLine();
+				break;
+			case "3":
+				myShelter.cleanAllCages();
+				System.out.println("You cleaned all the cages, regardless of whether or not they needed it.  You are very fastidious, human unit.");
+				System.out.println("Press enter to continue.");
+				input.nextLine();
+				break;
+			case "4":
+				actionResult = myShelter.scoopLitterBox();
+
+				if (actionResult.equals("no need")) {
+					System.out.println("The litter boxes are all already clean. No need to scoop them out right now.");
+					System.out.println("Press enter to continue.");
+					input.nextLine();
+					continue;
+				}
+
+				System.out.println("You scooped out the litter boxes. Proper hygiene is important for maintaining proper organic unit health levels.");
+				System.out.println("Press enter to continue.");
+				input.nextLine();
+				break;
+			case "5":
 				System.out.println("Current Virtual Cat Roster");
 				System.out.println("---------------------------");
 				for (VirtualPet currentPet : currentPetList) {
@@ -117,77 +186,6 @@ public class VirtualPetsAmokApp {
 				System.out.println("Press enter to continue.");
 				input.nextLine();
 				break;
-			case "2":
-				do {
-					System.out.println("What kind of food do you want to put out?");
-					System.out.println("Depending upon the kind of food, some cats may not be willing to eat it.");
-					System.out.println();
-					System.out.println("1. Trader Moe's dry food");
-					System.out.println("2. Fancier Feast premium wet food");
-					System.out.println("3. Raw meat");
-					System.out.println("4. Table scraps");
-					System.out.println("5. Never mind, go back to the main menu");
-					choice = input.nextLine();
-					System.out.println();
-
-					switch (choice) {
-					case "1":
-					case "2":
-					case "3":
-					case "4":
-					case "5":
-						break;
-					default:
-						continue;
-					}
-					break;
-				} while (true);
-
-				if (choice.equals("5"))
-					continue;
-
-				myShelter.putOutFood(Integer.parseInt(choice));
-				System.out.println("You refilled the food bowls. Now the cats will have plenty to eat.");
-				System.out.println("Press enter to continue.");
-				input.nextLine();
-				break;
-			case "3":
-				actionResult = myShelter.putOutWater();
-
-				if (actionResult.equals("no need")) {
-					System.out.println("The water bowls are all already full. No need to put out more water right now.");
-					System.out.println("Press enter to continue.");
-					input.nextLine();
-					continue;
-				}
-
-				System.out.println("You refilled the water bowls. Now the cats will have plenty to drink.");
-				System.out.println("Press enter to continue.");
-				input.nextLine();
-				break;
-			case "4":
-				System.out.println("Please enter the number of the litter box you would like to scoop out:");
-				choice = input.nextLine();
-				System.out.println();
-
-				actionResult = myShelter.scoopLitterBox();
-
-				if (!actionResult.equals("success")) {
-					if (actionResult.equals("invalid number")) {
-						System.out.println("Invalid litter box number.");
-						System.out.println("Press enter to continue.");
-					} else {
-						System.out.println("That litter box is already clean. No need to scoop it out right now.");
-						System.out.println("Press enter to continue.");
-					}
-					input.nextLine();
-					continue;
-				} else {
-					System.out.println("You scooped out the litter box. Gotta exercise proper hygiene.");
-					System.out.println("Press enter to continue.");
-					input.nextLine();
-					break;
-				}
 			case "5":
 				myShelter.addLitterBox();
 

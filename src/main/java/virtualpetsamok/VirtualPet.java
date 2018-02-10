@@ -48,19 +48,7 @@ public abstract class VirtualPet {
 
 	public abstract void keepValuesInBounds();
 
-	// public String getStats() {
-	// String namePart = "";
-	// if (name.length() < 9) {
-	// namePart = name + "\t\t|";
-	// } else { // if (name.length() < 15) {
-	// namePart = name + "\t|";
-	// } // else {
-	// // namePart = name + " |";
-	// // }
-	// return namePart + hungerLevel + "\t|" + thirstLevel + "\t|" + happinessLevel
-	// + "\t |" + tirednessLevel + "\t\t|" + wasteLevel;
-	// }
-	//
+	
 
 	public boolean equals(VirtualPet input) {
 		return name.hashCode() == input.hashCode();
@@ -71,8 +59,21 @@ public abstract class VirtualPet {
 		return name.hashCode();
 	}
 
+//	@Override
+//	public String toString() {
+//		return name + ": " + description;
+//	}
+
 	@Override
 	public String toString() {
-		return name + ": " + description;
+		String namePart = "";
+		if (name.length() < 9) {
+			namePart = name + "\t\t|";
+		} else if (name.length() < 15) {
+			namePart = name + "\t|";
+		} else {
+			namePart = name + " |";
+		}
+		return namePart;
 	}
 }

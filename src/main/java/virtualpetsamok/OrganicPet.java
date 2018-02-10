@@ -104,4 +104,9 @@ public abstract class OrganicPet extends VirtualPet {
 			healthLevel = 100;
 	}
 
+	@Override
+	public String toString() {
+		return super.toString() + hungerLevel + "\t|" + thirstLevel + "\t|" + happinessLevel + "\t |" + tirednessLevel + "\t\t|" + wasteLevel;
+	}
+
 }
