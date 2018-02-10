@@ -94,4 +94,11 @@ public class RobotDogTest {
 		assertThat(underTest.getHealthLevel(), is(40));
 	}
 
+	@Test
+	public void shouldLowerHappinessLevelBySpecifiedAmount() {
+		underTest.lowerHappinessLevel(10);
+
+		assertThat(underTest.getHappinessLevel(), is(40));
+	}
+
 }

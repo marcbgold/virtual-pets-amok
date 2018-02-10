@@ -1,6 +1,6 @@
 package virtualpetsamok;
 
-public class OrganicDog extends OrganicPet implements Walkable {
+public class OrganicDog extends OrganicPet implements Walkable, Cageable {
 
 	public OrganicDog(String name, String description) {
 		this(name, description, 20, 20, 50, 10, 0, 100);

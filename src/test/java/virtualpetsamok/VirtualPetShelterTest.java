@@ -212,7 +212,6 @@ public class VirtualPetShelterTest {
 
 		assertThat(crono.getHappinessLevel(), is(70));
 		assertThat(extraRobot.getHappinessLevel(), is(70));
-
 	}
 
 }

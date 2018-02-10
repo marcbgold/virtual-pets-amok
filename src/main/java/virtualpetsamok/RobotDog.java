@@ -1,6 +1,6 @@
 package virtualpetsamok;
 
-public class RobotDog extends RobotPet implements Walkable {
+public class RobotDog extends RobotPet implements Walkable, Cageable {
 
 	public RobotDog(String name, String description) {
 		this(name, description, 80, 50, 90, 100);

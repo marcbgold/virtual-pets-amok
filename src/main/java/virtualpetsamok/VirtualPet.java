@@ -26,6 +26,10 @@ public abstract class VirtualPet {
 		return happinessLevel;
 	}
 
+	public void lowerHappinessLevel(int amount) {
+		happinessLevel -= amount;
+	}
+
 	public int getHealthLevel() {
 		return healthLevel;
 	}

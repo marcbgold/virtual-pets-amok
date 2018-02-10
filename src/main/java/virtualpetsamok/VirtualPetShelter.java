@@ -6,7 +6,7 @@ import java.util.Map;
 
 public class VirtualPetShelter {
 
-	// TODO add health modifier method
+	// TODO add health modifier test
 
 	private Map<String, VirtualPet> roster = new HashMap<>();
 
@@ -28,6 +28,7 @@ public class VirtualPetShelter {
 	private Map<VirtualPet, Cage> cageList = new HashMap<>();
 
 	private boolean floorIsDirty;
+	private boolean petIsDead;
 
 	public VirtualPetShelter() {
 		this(0);
@@ -62,7 +63,7 @@ public class VirtualPetShelter {
 
 	public void admitNewPet(VirtualPet petInput) {
 		roster.put(petInput.getName(), petInput);
-		if (petInput instanceof OrganicDog) {
+		if (petInput instanceof Cageable) {
 			cageList.put(petInput, new Cage());
 		}
 	}
@@ -106,7 +107,7 @@ public class VirtualPetShelter {
 
 	public void adoptOutPet(String name) {
 		VirtualPet pet = roster.get(name);
-		if (pet instanceof OrganicDog) {
+		if (cageList.containsKey(pet)) {
 			cageList.remove(pet);
 		}
 		roster.remove(name);
@@ -177,7 +178,7 @@ public class VirtualPetShelter {
 
 	public String playWithPet(String name) {
 		VirtualPet pet = getPet(name);
-		if (pet.getHealthLevel() <= 30) {
+		if (pet.getHealthLevel() <= 20) {
 			return "too unhealthy";
 		}
 
@@ -246,5 +247,54 @@ public class VirtualPetShelter {
 				}
 			}
 		}
+	}
+
+	public void checkForHealthProblems() {
+		boolean healthDropped;
+
+		for (VirtualPet currentPet : roster.values()) {
+			healthDropped = false;
+
+			if (currentPet.getHealthLevel() <= 30) {
+				currentPet.lowerHappinessLevel(10);
+			}
+
+			if (currentPet.getHappinessLevel() == 0) {
+				currentPet.lowerHealthLevel(10);
+				healthDropped = true;
+			}
+
+			if (currentPet instanceof OrganicPet) {
+				OrganicPet orgPet = (OrganicPet) currentPet;
+				if (orgPet.getHungerLevel() == 100 || orgPet.getThirstLevel() == 100) {
+					orgPet.lowerHealthLevel(10);
+					healthDropped = true;
+				}
+				if (floorIsDirty) {
+					orgPet.lowerHealthLevel(10);
+					healthDropped = true;
+				}
+				if (orgPet instanceof OrganicDog && checkIfCageIsDirty(orgPet)) {
+					orgPet.lowerHealthLevel(10);
+					healthDropped = true;
+				}
+			} else if (currentPet instanceof RobotPet) {
+				RobotPet roboPet = (RobotPet) currentPet;
+				if (roboPet.getOilLevel() == 0 || roboPet.getChargeLevel() == 0) {
+					roboPet.lowerHealthLevel(10);
+					healthDropped = true;
+				}
+			}
+
+			if (currentPet.getHealthLevel() <= 0) {
+				petIsDead = true;
+				break;
+			}
+
+			if (!healthDropped) {
+				currentPet.raiseHealthLevel(10);
+			}
+		}
+
 	}
 }

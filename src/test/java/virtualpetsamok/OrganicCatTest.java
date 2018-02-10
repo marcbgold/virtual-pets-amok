@@ -106,4 +106,11 @@ public class OrganicCatTest {
 
 		assertThat(underTest.getHealthLevel(), is(50));
 	}
+
+	@Test
+	public void shouldLowerHappinessLevelBySpecifiedAmount() {
+		underTest.lowerHappinessLevel(10);
+
+		assertThat(underTest.getHappinessLevel(), is(50));
+	}
 }
