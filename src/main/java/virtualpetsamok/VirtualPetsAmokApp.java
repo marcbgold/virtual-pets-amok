@@ -11,7 +11,7 @@ public class VirtualPetsAmokApp {
 
 		Scanner input = new Scanner(System.in);
 		String choice;
-		String nameInput;
+		String nameInput = null;
 		String descriptionInput;
 		String actionResult;
 		Collection<VirtualPet> currentPetList;
@@ -110,7 +110,7 @@ public class VirtualPetsAmokApp {
 					continue;
 				}
 
-				System.out.println("You refilled the food bowls. Now the pets will have plenty to eat.");
+				System.out.println("You refilled the food bowls. Now the organic pets will have plenty to eat.");
 				System.out.println("Press enter to continue.");
 				input.nextLine();
 				break;
@@ -124,13 +124,15 @@ public class VirtualPetsAmokApp {
 					continue;
 				}
 
-				System.out.println("You refilled the water bowls. Now the pets will have plenty to drink.");
+				System.out.println("You refilled the water bowls. Now the organic pets will have plenty to drink.");
 				System.out.println("Press enter to continue.");
 				input.nextLine();
 				break;
 			case "3":
 				myShelter.cleanAllCages();
+
 				System.out.println("You cleaned all the cages, regardless of whether or not they needed it.  You are very fastidious, human unit.");
+				System.out.println("Now the organic pets who utilize those cages will not see their health levels drop.");
 				System.out.println("Press enter to continue.");
 				input.nextLine();
 				break;
@@ -144,22 +146,22 @@ public class VirtualPetsAmokApp {
 					continue;
 				}
 
-				System.out.println("You scooped out the litter boxes. Proper hygiene is important for maintaining proper organic unit health levels.");
+				System.out.println("You scooped out the litter boxes. Proper hygiene is important for maintaining proper organic cat unit health levels.");
 				System.out.println("Press enter to continue.");
 				input.nextLine();
 				break;
 			case "5":
-				System.out.println("Current Virtual Cat Roster");
+				System.out.println("Current Virtual Pet Roster");
 				System.out.println("---------------------------");
 				for (VirtualPet currentPet : currentPetList) {
-					System.out.println(currentPet);
+					System.out.println(currentPet.getName() + ": " + currentPet.getDescription());
 				}
 				System.out.println();
-				System.out.println("Please enter the name of the cat you would like to play with:");
+				System.out.println("Please enter the name of the pet you would like to play with:");
 				nameInput = input.nextLine().trim();
 
 				if (!myShelter.checkIfPetExists(nameInput)) {
-					System.out.println("There is no cat with that name in the shelter.");
+					System.out.println("There is no pet with that name in this shelter.");
 					System.out.println("Press enter to continue.");
 					input.nextLine();
 					continue;
@@ -168,32 +170,49 @@ public class VirtualPetsAmokApp {
 				actionResult = myShelter.playWithPet(nameInput);
 
 				if (!actionResult.equals("success")) {
-					if (actionResult.equals("not bored enough")) {
-						System.out.println(nameInput + " isn't bored enough to play with you right now. Try again later.");
-					} else if (actionResult.equals("too tired")) {
+					if (actionResult.equals("too tired")) {
 						System.out.println(nameInput + " is too tired to play with you right now. Try again later.");
-					} else {
+					} else if (actionResult.equals("too hungry")) {
 						System.out.println(nameInput + " is too hungry to play with you right now. Try again later.");
+					} else if (actionResult.equals("oil too low")) {
+						System.out.println(nameInput + "'s oil levels are too low to play with you right now. Try again later.");
+					} else if (actionResult.equals("charge too low")) {
+						System.out.println(nameInput + "'s battery levels are too low to play with you right now. Try again later.");
+					} else {
+						System.out.println(nameInput + " is too unhealthy to play with you right now. You should really address that immediately.");
 					}
-
 					System.out.println("Press enter to continue.");
 					input.nextLine();
 					continue;
 				}
 
-				System.out.println("You played with " + nameInput + ". They look like they had fun.");
-				System.out.println("Now let's see what needs to get done next.");
-				System.out.println("Press enter to continue.");
-				input.nextLine();
-				break;
-			case "5":
-				myShelter.addLitterBox();
-
-				System.out.println("You put out an additional litter box. That should help keep the place clean.");
+				System.out.println("You played with " + nameInput + ". Quantifiable fun levels have been achieved.");
+				System.out.println("Now you should identify another task and complete it.");
 				System.out.println("Press enter to continue.");
 				input.nextLine();
 				break;
 			case "6":
+				myShelter.walkAllDogs();
+
+				System.out.print("You walked all the dogs. Now they are happier, and the organic ones will not make a mess of their cages for the time being.");
+				System.out.println("Press enter to continue.");
+				input.nextLine();
+				break;
+			case "7":
+				myShelter.oilAllRobots();
+
+				System.out.print("You oiled all the robots. Now they will be able to function with maximum mobility.");
+				System.out.println("Press enter to continue.");
+				input.nextLine();
+				break;
+			case "8":
+				myShelter.chargeAllRobots();
+
+				System.out.print("You recharged all the robots. This is good. No robot should have to put up with an empty battery.");
+				System.out.println("Press enter to continue.");
+				input.nextLine();
+				break;
+			case "9":
 				System.out.println("Please enter the name of the cat you would like to admit:");
 				nameInput = input.nextLine().trim();
 				if (nameInput.equals("")) {
@@ -203,7 +222,7 @@ public class VirtualPetsAmokApp {
 
 				if (nameInput.length() > 15) {
 					System.out.println("That name is too long.");
-					System.out.println("Names over 15 characters screw up the roster formatting.  Try a shorter one.");
+					System.out.println("Names over 15 characters screw up the roster formatting. Try a shorter one.");
 					System.out.println("Press enter to continue.");
 					input.nextLine();
 					continue;
@@ -211,7 +230,7 @@ public class VirtualPetsAmokApp {
 
 				if (myShelter.checkIfPetExists(nameInput)) {
 					System.out.println("There's already a cat with that name in this shelter.");
-					System.out.println("It'd be too confusing if two cats had the same name.  Try a different one.");
+					System.out.println("It'd be too confusing if two cats had the same name. Try a different one.");
 					System.out.println("Press enter to continue.");
 					input.nextLine();
 					continue;
@@ -231,7 +250,7 @@ public class VirtualPetsAmokApp {
 				System.out.println("Press enter to continue.");
 				input.nextLine();
 				break;
-			case "7":
+			case "10":
 				System.out.println("Current Virtual Cat Roster");
 				System.out.println("---------------------------");
 				for (VirtualPet currentPet : currentPetList) {
@@ -252,11 +271,11 @@ public class VirtualPetsAmokApp {
 				myShelter.adoptOutPet(nameInput);
 
 				System.out.println(nameInput + " has successfully been adopted out to a new home.");
-				System.out.println("Bye, " + nameInput + "!  Have a good life!");
+				System.out.println("Bye, " + nameInput + "! Have a good life!");
 				System.out.println("Press enter to continue.");
 				input.nextLine();
 				break;
-			case "8":
+			case "11":
 				System.out.println("Please enter the name of the cat whose description you would like to see:");
 				nameInput = input.nextLine().trim();
 				System.out.println();
@@ -275,13 +294,21 @@ public class VirtualPetsAmokApp {
 				System.out.println("Press enter to continue.");
 				input.nextLine();
 				continue;
-			case "9":
+			case "12":
 				System.out.println("OK, I guess you can just stare at the cats if you feel like it.");
-				System.out.println("Don't stare for too long, though.  You have work to do.");
+				System.out.println("Don't stare for too long, though. You have work to do.");
 				System.out.println("Press enter to continue.");
 				input.nextLine();
 				break;
-			case "10":
+			case "13":
+				break;
+			case "14":
+				myShelter.cleanFloor();
+
+				System.out.println("You cleaned the floor.  Now the organic pets will not get sick from stepping in their own filth.");
+				System.out.println("This is your fault for not cleaning the cages and litter boxes sooner, you know.  Don't let it happen again.");
+				System.out.println("Press enter to continue.");
+				input.nextLine();
 				break;
 			default:
 				continue;
@@ -292,9 +319,11 @@ public class VirtualPetsAmokApp {
 				myShelter.petsTakeCareOfSelves();
 			}
 
-		} while (!choice.equals("10") && myShelter.getPetHasUsedFloorCount() < 3);
+		} while (!choice.equals("10") && !myShelter.checkIfPetIsDead());
 
-		if (myShelter.getPetHasUsedFloorCount() >= 3) {
+		if (myShelter.checkIfPetIsDead())
+
+		{
 			System.out.println("OK, seriously.  Why did you never scoop out the litter boxes on time?!");
 			System.out.print("You forced the cats to go on the floor so many times that Animal Protection Services shut down the shelter");
 			System.out.println(" for being a health hazard!");
