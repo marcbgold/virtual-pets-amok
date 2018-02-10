@@ -178,6 +178,7 @@ public class VirtualPetsAmokApp {
 					continue;
 				}
 
+				System.out.println();
 				System.out.println("You played with " + nameInput + ". Quantifiable fun levels have been achieved.");
 				System.out.println("Now you should identify another task and complete it.");
 				System.out.println("Press enter to continue.");
