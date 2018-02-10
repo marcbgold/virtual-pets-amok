@@ -15,14 +15,13 @@ public class VirtualPetShelterTest {
 
 	@Before
 	public void setup() {
-		underTest = new VirtualPetShelter(3);
+		underTest = new VirtualPetShelter(4);
 		testPet = new OrganicDog(NAME, DESCRIPTION);
 		underTest.admitNewPet(testPet);
 	}
 
 	@Test
-	public void shouldAdmitNewPets() {
-		assertThat(underTest.checkIfPetExists("Mario"), is(true));
+	public void shouldAdmitNewPet() {
 		assertThat(underTest.checkIfPetExists(NAME), is(true));
 	}
 
@@ -35,20 +34,16 @@ public class VirtualPetShelterTest {
 
 	@Test
 	public void putOutFoodShouldRaiseFoodBowlLevelToOrganicPetCountTimes2() {
-		RobotCat extraRobotPet = new RobotCat("test", "");
-		underTest.admitNewPet(extraRobotPet);
 		underTest.putOutFood();
 
-		assertThat(underTest.getFoodBowlLevel(), is(4));
+		assertThat(underTest.getFoodBowlLevel(), is(6));
 	}
 
 	@Test
 	public void putOutWaterShouldRaiseWaterBowlLevelToOrganicPetCountTimes2() {
-		RobotCat extraRobotPet = new RobotCat("test", "");
-		underTest.admitNewPet(extraRobotPet);
 		underTest.putOutWater();
 
-		assertThat(underTest.getWaterBowlLevel(), is(4));
+		assertThat(underTest.getWaterBowlLevel(), is(6));
 	}
 
 	@Test
@@ -58,24 +53,15 @@ public class VirtualPetShelterTest {
 		assertThat(underTest.getLitterBoxLevel(), is(0));
 	}
 
-	// boolean wasPlayedWith = false;
-	//
-	// public class PlayableDouble implements Playable {
-	// @Override
-	// public void play() {
-	// wasPlayedWith = true;
-	// }
-	// }
-
 	@Test
 	public void shouldPlayWithBothOrganicAndRobotPets() {
 		RobotCat extraRobotPet = new RobotCat("robot", "");
 		underTest.admitNewPet(extraRobotPet);
-		underTest.playWithPet(NAME);
-		underTest.playWithPet("robot");
+		String organicResult = underTest.playWithPet(NAME);
+		String robotResult = underTest.playWithPet("robot");
 
-		assertThat(testPet.getHappinessLevel(), is(100));
-		assertThat(extraRobotPet.getHappinessLevel(), is(100));
+		assertThat(organicResult, is("success"));
+		assertThat(robotResult, is("success"));
 	}
 
 	@Test
@@ -127,32 +113,29 @@ public class VirtualPetShelterTest {
 
 		assertThat(chargeTooLowResult, is("charge too low"));
 	}
-	//
-	// @Test
-	// public void petsShouldTakeCareOfSelves() {
-	// underTest.admitNewPetWithSpecialValues("Extra", DESCRIPTION, 60, 60, 60, 60,
-	// 60, 3, 4);
-	// underTest.putOutFood(1);
-	// underTest.putOutWater();
-	// underTest.scoopLitterBox("1");
-	// underTest.petsTakeCareOfSelves();
-	//
-	// VirtualPet testPet = underTest.getPet("Extra");
-	// assertThat(testPet.getHungerLevel(), is(50));
-	// assertThat(testPet.getThirstLevel(), is(60));
-	// assertThat(testPet.getWasteLevel(), is(0));
-	// assertThat(underTest.getFoodBowlLevel(), is(5));
-	// assertThat(underTest.getWaterBowlLevel(), is(5));
-	// assertThat(underTest.getLitterBoxLevel("1"), is(1));
-	// }
-	//
-	// @Test
-	// public void petShouldUseFloorWhenThereIsNoCleanLitterBox() {
-	// underTest.admitNewPetWithSpecialValues("Extra", DESCRIPTION, 60, 60, 60, 60,
-	// 100, 0, 0);
-	// underTest.petsTakeCareOfSelves();
-	//
-	// assertThat(underTest.getPetHasUsedFloorCount(), is(1));
-	// }
-	//
+
+	@Test
+	public void petsShouldTakeCareOfSelves() {
+		OrganicCat extraCat = new OrganicCat("Extra", DESCRIPTION, 60, 60, 60, 60, 60, 60);
+		underTest.admitNewPet(extraCat);
+
+		underTest.putOutFood();
+		underTest.putOutWater();
+		underTest.scoopLitterBoxes();
+		underTest.petsTakeCareOfSelves();
+
+		assertThat(underTest.getFoodBowlLevel(), is(7));
+		assertThat(underTest.getWaterBowlLevel(), is(7));
+		assertThat(underTest.getLitterBoxLevel(), is(1));
+	}
+
+	@Test
+	public void organicCatShouldUseFloorWhenLitterBoxesAreFull() {
+		OrganicCat extraCat = new OrganicCat("Extra", DESCRIPTION, 60, 60, 60, 60, 100, 60);
+		underTest.admitNewPet(extraCat);
+		underTest.petsTakeCareOfSelves();
+
+		assertThat(underTest.checkIfFloorHasCrapOnIt(), is(true));
+	}
+
 }

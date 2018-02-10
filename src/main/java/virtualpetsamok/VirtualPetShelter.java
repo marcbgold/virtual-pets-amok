@@ -8,12 +8,23 @@ public class VirtualPetShelter {
 
 	// TODO add cage class
 	// TODO add 1-to-1 dog/cage relationship
-	// TODO remove multiple litterboxes and raise max litterbox level
+	// TODO add ability to walk all dogs
+	// TODO add ability to oil all robots
 
 	private Map<String, VirtualPet> roster = new HashMap<>();
-	private final String DEFAULT_NAME = "Mario";
-	private final String DEFAULT_DESCRIPTION = "Short, fat, male tabby with bushy, kinda reddish fur.  Seems to like mushrooms and flowers for some odd reason.";
-	private final OrganicCat defaultPet = new OrganicCat(DEFAULT_NAME, DEFAULT_DESCRIPTION);
+
+	private final String organicDogName = "Crono";
+	private final String organicDogDescription = "Reddish-orange male mutt with short, spiky fur.  Very friendly and athletic, but you've never heard him bark.  Ever.";
+	private final OrganicDog defaultOrganicDog = new OrganicDog(organicDogName, organicDogDescription);
+
+	private final String organicCatName = "Lara";
+	private final String organicCatDescription = "Black and gray female tabby.  Extra nimble and slinky.  Inists upon trying to get into every enclosed space she can find.";
+	private final OrganicCat defaultOrganicCat = new OrganicCat(organicCatName, organicCatDescription);
+
+	private final String robotCatName = "GLaDOS";
+	private final String robotCatDescription = "Mostly white with large, yellow eyes.  Seems to always be mocking you.  Possibly wants to kill you.";
+	private final RobotCat defaultRobotPet = new RobotCat(robotCatName, robotCatDescription);
+
 	private int foodBowlLevel;
 	private int waterBowlLevel;
 	private int litterBoxLevel;
@@ -27,7 +38,9 @@ public class VirtualPetShelter {
 
 	public VirtualPetShelter(int litterBoxLevel) {
 		this.litterBoxLevel = litterBoxLevel;
-		admitNewPet(defaultPet);
+		admitNewPet(defaultOrganicDog);
+		admitNewPet(defaultOrganicCat);
+		admitNewPet(defaultRobotPet);
 	}
 
 	public int getFoodBowlLevel() {
@@ -42,7 +55,11 @@ public class VirtualPetShelter {
 		return litterBoxLevel;
 	}
 
-	public boolean getFloorHasCrapOnIt() {
+	public boolean checkIfLitterBoxesAreFull() {
+		return litterBoxLevel >= getOrganicCatCount() * 2;
+	}
+
+	public boolean checkIfFloorHasCrapOnIt() {
 		return floorHasCrapOnIt;
 	}
 
@@ -66,6 +83,16 @@ public class VirtualPetShelter {
 		int count = 0;
 		for (VirtualPet i : getAllPets()) {
 			if (i instanceof OrganicPet) {
+				count++;
+			}
+		}
+		return count;
+	}
+
+	public int getOrganicCatCount() {
+		int count = 0;
+		for (VirtualPet i : getAllPets()) {
+			if (i instanceof OrganicCat) {
 				count++;
 			}
 		}
@@ -119,10 +146,6 @@ public class VirtualPetShelter {
 		return "no need";
 	}
 
-	// public Map<String, Integer> getAllLitterBoxes() {
-	// return litterBoxes;
-	// }
-
 	public String scoopLitterBoxes() {
 		if (litterBoxLevel == 0) {
 			return "no need";
@@ -132,49 +155,41 @@ public class VirtualPetShelter {
 		}
 	}
 
-	// public void addLitterBox() {
-	// int currentSize = litterBoxes.size();
-	// litterBoxes.put(Integer.toString(currentSize + 1), 0);
-	// }
-	//
-	// public String findCleanLitterBox() {
-	// for (Entry<String, Integer> entry : litterBoxes.entrySet()) {
-	// if (Integer.valueOf(entry.getValue()) < 3) {
-	// return entry.getKey();
-	// }
-	// }
-	// return "0";
-	// }
+	public void cleanFloor() {
+		floorHasCrapOnIt = false;
+	}
 
 	public void petsTakeCareOfSelves() {
 		for (VirtualPet currentPet : getAllPets()) {
 			currentPet.tick();
 
-			if (currentPet.getHungerLevel() >= 50 && foodType != currentPet.getHatedFoodType() && foodBowlLevel > 0) {
-				if (foodType != currentPet.getDislikedFoodType()) {
-					currentPet.eat();
-				} else if (currentPet.getHungerLevel() >= 70)
-					currentPet.eat();
-				foodBowlLevel--;
-			}
+			if (currentPet instanceof OrganicPet) {
+				OrganicPet orgPet = (OrganicPet) currentPet;
 
-			if (currentPet.getThirstLevel() >= 50 && waterBowlLevel > 0) {
-				currentPet.drink();
-				waterBowlLevel--;
-			}
+				if (orgPet.getHungerLevel() >= 50 && foodBowlLevel > 0) {
+					orgPet.eat();
+					foodBowlLevel--;
+				}
 
-			String cleanBoxNum = findCleanLitterBox();
-			if (currentPet.getWasteLevel() == 100 && cleanBoxNum == "0") {
-				currentPet.useBathroom();
-				petHasUsedFloorCount++;
-			} else if (currentPet.getWasteLevel() >= 70 && !cleanBoxNum.equals("0")) {
-				currentPet.useBathroom();
-				int boxLevel = litterBoxes.get(cleanBoxNum);
-				litterBoxes.put(cleanBoxNum, boxLevel + 1);
-			}
+				if (orgPet.getThirstLevel() >= 50 && waterBowlLevel > 0) {
+					orgPet.drink();
+					waterBowlLevel--;
+				}
 
-			if (currentPet.getTirednessLevel() >= 80) {
-				currentPet.sleep();
+				if (orgPet instanceof OrganicCat) {
+					OrganicCat orgCat = (OrganicCat) orgPet;
+					if (orgCat.getWasteLevel() == 100 && checkIfLitterBoxesAreFull()) {
+						orgCat.useBathroom();
+						floorHasCrapOnIt = true;
+					} else if (orgPet.getWasteLevel() >= 70 && !checkIfLitterBoxesAreFull()) {
+						orgCat.useBathroom();
+						litterBoxLevel++;
+					}
+				}
+
+				if (orgPet.getTirednessLevel() >= 80) {
+					orgPet.sleep();
+				}
 			}
 		}
 	}
