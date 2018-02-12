@@ -98,15 +98,6 @@ public class VirtualPetShelter {
 				organics.add(currentPet);
 			}
 		}
-
-		// Collection<VirtualPet> organics = roster.values();
-		// Iterator<VirtualPet> itr = organics.iterator();
-		//
-		// while (itr.hasNext()) {
-		// if (!(itr.next() instanceof OrganicPet)) {
-		// itr.remove();
-		// }
-		// }
 		return organics;
 	}
 
@@ -118,15 +109,6 @@ public class VirtualPetShelter {
 				robots.add(currentPet);
 			}
 		}
-
-		// Collection<VirtualPet> robots = roster.values();
-		// Iterator<VirtualPet> itr = robots.iterator();
-		//
-		// while (itr.hasNext()) {
-		// if (!(itr.next() instanceof RobotPet)) {
-		// itr.remove();
-		// }
-		// }
 		return robots;
 	}
 
