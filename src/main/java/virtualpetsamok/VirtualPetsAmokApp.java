@@ -83,9 +83,9 @@ public class VirtualPetsAmokApp {
 			System.out.println("7. Oil all robots\t\t\t|8. Recharge all robots");
 			System.out.println("9. Admit new pet to shelter\t\t|10. Adopt out pet");
 			System.out.println("11. Look at description of a pet\t|12. Loaf around");
-			System.out.println("13. Quit");
+			System.out.println("13. Herd all cats\t\t\t|14. Quit");
 			if (myShelter.checkIfFloorIsDirty()) {
-				System.out.println("14. Clean floor");
+				System.out.println("15. Clean floor");
 			}
 			choice = input.nextLine();
 			System.out.println();
@@ -350,8 +350,13 @@ public class VirtualPetsAmokApp {
 				input.nextLine();
 				break;
 			case "13":
-				break;
+				System.out.println("You fail. Don't even bother trying that one.");
+				System.out.println("Press enter to continue.");
+				input.nextLine();
+				continue;
 			case "14":
+				break;
+			case "15":
 				myShelter.cleanFloor();
 
 				System.out.println("You cleaned the floor.  Now the organic pets will not get sick from stepping in their own filth.");
@@ -363,13 +368,13 @@ public class VirtualPetsAmokApp {
 				continue;
 			}
 
-			if (!choice.equals("13")) {
+			if (!choice.equals("14")) {
 				System.out.println();
 				myShelter.petsTakeCareOfSelves();
 				myShelter.checkForHealthProblems();
 			}
 
-		} while (!choice.equals("13") && !myShelter.checkIfPetIsDead());
+		} while (!choice.equals("14") && !myShelter.checkIfPetIsDead());
 
 		if (myShelter.checkIfPetIsDead()) {
 			System.out.println("Critical failure.  Your inattentiveness has allowed a pet to die.");
